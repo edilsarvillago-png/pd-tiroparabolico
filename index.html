@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plan Diario de Clase - Tiro Parabólico - Colegio Montano</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- MathJax for LaTeX support -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            montano: {
+              blue: '#1269A8',
+              yellow: '#F7D615',
+              graygreen: '#54887D',
+              lightblue: '#88B5C7',
+              olive: '#A6B046',
+              bgsoft: '#F2F5E9'
+            }
+          },
+          fontFamily: {
+            sans: ['Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #F2F5E9;
+      color: #1e293b;
+    }
+    .tab-btn.active {
+      background-color: #1269A8;
+      color: #ffffff;
+      border-bottom: 4px solid #F7D615;
+    }
+    .moment-btn.active {
+      background-color: #54887D;
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body class="font-sans antialiased min-h-screen flex flex-col">
+
+  <!-- ENCABEZADO INSTITUCIONAL -->
+  <header class="bg-[#1269A8] text-white shadow-md border-b-4 border-[#F7D615]">
+    <div class="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center space-x-4">
+        <div class="bg-white p-2 rounded-lg shadow-inner">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyEop0yf6lZ7Jk9MILZxF1rBj4Oqs5esyhIQ&s" alt="Logo Colegio Montano" class="h-16 w-auto object-contain">
+        </div>
+        <div>
+          <h1 class="text-2xl font-bold tracking-tight text-white">COLEGIO MONTANO</h1>
+          <p class="text-xs text-[#88B5C7] font-semibold tracking-wider uppercase">Planificación Didáctica Diaria Presencial</p>
+        </div>
+      </div>
+      
+      <div class="bg-white/10 backdrop-blur-md px-4 py-2 rounded-xl border border-white/20 text-right text-sm">
+        <span class="inline-block bg-[#F7D615] text-[#1269A8] font-bold px-2 py-0.5 rounded text-xs mr-2">Física Fundamental</span>
+        <span class="font-semibold text-white">Tercero Básico</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- METADATOS DEL PLAN -->
+  <section class="max-w-7xl mx-auto w-full px-4 pt-6">
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+      <div class="border-l-4 border-[#1269A8] pl-3">
+        <p class="text-xs text-slate-500 font-semibold uppercase">Docente</p>
+        <p class="font-bold text-slate-800">Prof. Ramiro Argueta</p>
+      </div>
+      <div class="border-l-4 border-[#54887D] pl-3">
+        <p class="text-xs text-slate-500 font-semibold uppercase">Tema de Clase</p>
+        <p class="font-bold text-[#1269A8]">Tiro Parabólico</p>
+      </div>
+      <div class="border-l-4 border-[#A6B046] pl-3">
+        <p class="text-xs text-slate-500 font-semibold uppercase">Unidad / Plan No.</p>
+        <p class="font-bold text-slate-800">Unidad 3 | Plan N° 4</p>
+      </div>
+      <div class="border-l-4 border-[#88B5C7] pl-3">
+        <p class="text-xs text-slate-500 font-semibold uppercase">Fecha</p>
+        <p class="font-bold text-slate-800">Septiembre 2026</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- NAVEGACIÓN PRINCIPAL -->
+  <div class="max-w-7xl mx-auto w-full px-4 mt-6">
+    <div class="flex flex-wrap border-b border-slate-300 bg-white rounded-t-xl overflow-hidden shadow-sm">
+      <button onclick="switchMainTab('marco')" id="tab-btn-marco" class="tab-btn active px-6 py-3 font-bold text-sm transition-all flex items-center gap-2">
+        <i class="fa-solid fa-graduation-cap"></i> 1. Marco Pedagógico (CNB)
+      </button>
+      <button onclick="switchMainTab('secuencia')" id="tab-btn-secuencia" class="tab-btn px-6 py-3 font-bold text-sm text-slate-600 hover:text-[#1269A8] transition-all flex items-center gap-2">
+        <i class="fa-solid fa-chalkboard-user"></i> 2. Secuencia Didáctica por Momentos
+      </button>
+      <button onclick="switchMainTab('simulador')" id="tab-btn-simulador" class="tab-btn px-6 py-3 font-bold text-sm text-slate-600 hover:text-[#1269A8] transition-all flex items-center gap-2">
+        <i class="fa-solid fa-gamepad"></i> 3. Simulador Interactivo
+      </button>
+      <button onclick="switchMainTab('evaluacion')" id="tab-btn-evaluacion" class="tab-btn px-6 py-3 font-bold text-sm text-slate-600 hover:text-[#1269A8] transition-all flex items-center gap-2">
+        <i class="fa-solid fa-clipboard-check"></i> 4. Rúbrica de Plenaria
+      </button>
+    </div>
+  </div>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="max-w-7xl mx-auto w-full px-4 mb-12 flex-1">
+    
+    <!-- PESTAÑA 1: MARCO PEDAGÓGICO -->
+    <div id="tab-marco" class="main-tab-content bg-white p-6 rounded-b-xl border-x border-b border-slate-200 shadow-sm space-y-6">
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Competencia & Logro -->
+        <div class="bg-[#F2F5E9] p-5 rounded-xl border border-[#A6B046]/40">
+          <h2 class="text-lg font-bold text-[#1269A8] mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-bullseye text-[#54887D]"></i> Competencia (CNB Guatemala)
+          </h2>
+          <p class="text-sm text-slate-700 leading-relaxed">
+            Aplica las leyes de la mecánica clásica y el análisis vectorial para resolver problemas cinemáticos del movimiento en dos dimensiones ($2D$), diferenciando la independencia de los movimientos horizontal ($VX$) y vertical ($VY$) en el entorno cotidiano.
+          </p>
+          
+          <h3 class="text-md font-bold text-[#54887D] mt-4 mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-check-circle"></i> Logro de Aprendizaje Observable
+          </h3>
+          <p class="text-sm text-slate-700 leading-relaxed">
+            Resuelve problemas numéricos de tiro parabólico calculando con precisión la velocidad inicial descompuesta ($v_{ox}, v_{oy}$), el tiempo de vuelo ($t_v$), la altura máxima ($y_{max}$) y el alcance horizontal máximo ($x_{max}$), comunicando la lógica aplicada.
+          </p>
+        </div>
+
+        <!-- Competencias Clave & Hábitos Montano -->
+        <div class="space-y-4">
+          <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
+            <h3 class="text-sm font-bold text-[#1269A8] mb-2 uppercase tracking-wide flex items-center gap-2">
+              <i class="fa-solid fa-brain text-[#F7D615]"></i> Competencias Clave a Desarrollar
+            </h3>
+            <div class="flex flex-wrap gap-2">
+              <span class="bg-slate-100 text-slate-700 text-xs font-semibold px-2.5 py-1 rounded-full border border-slate-300">Pensamiento Crítico</span>
+              <span class="bg-slate-100 text-slate-700 text-xs font-semibold px-2.5 py-1 rounded-full border border-slate-300">Resolución de Problemas</span>
+              <span class="bg-slate-100 text-slate-700 text-xs font-semibold px-2.5 py-1 rounded-full border border-slate-300">Trabajo en Equipo</span>
+              <span class="bg-slate-100 text-slate-700 text-xs font-semibold px-2.5 py-1 rounded-full border border-slate-300">Comunicación Efectiva</span>
+              <span class="bg-slate-100 text-slate-700 text-xs font-semibold px-2.5 py-1 rounded-full border border-slate-300">Toma de Decisiones</span>
+            </div>
+          </div>
+
+          <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
+            <h3 class="text-sm font-bold text-[#54887D] mb-2 uppercase tracking-wide flex items-center gap-2">
+              <i class="fa-solid fa-star text-[#F7D615]"></i> Hábitos Formativos Montano Aplicados
+            </h3>
+            <ul class="text-sm text-slate-700 space-y-2">
+              <li class="flex items-start gap-2">
+                <span class="bg-[#1269A8] text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">1</span>
+                <div><strong>Comenzar con un fin en mente:</strong> Visualizar la trayectoria deseada del proyectil antes de efectuar los cálculos algebraicos.</div>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="bg-[#1269A8] text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">2</span>
+                <div><strong>Pensar Ganar-Ganar & Sinergizar:</strong> Colaborar en equipos para resolver el reto de tiro parabólico apoyando a los compañeros en los despejes matemáticos.</div>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="bg-[#1269A8] text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">3</span>
+                <div><strong>Afilar la Sierra:</strong> Reforzar el aprendizaje practicando activamente con el simulador digital interactivo.</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Evaluación en 3 Momentos y Recursos -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-slate-200">
+        <div class="bg-blue-50/60 p-4 rounded-xl border border-blue-200">
+          <h4 class="font-bold text-[#1269A8] text-sm mb-1"><i class="fa-solid fa-flag"></i> Evaluación Inicial</h4>
+          <p class="text-xs text-slate-600">Lluvia de ideas guiada y dinámicas de activación sobre vectores y lanzamiento vertical previo.</p>
+        </div>
+        <div class="bg-emerald-50/60 p-4 rounded-xl border border-emerald-200">
+          <h4 class="font-bold text-[#54887D] text-sm mb-1"><i class="fa-solid fa-magnifying-glass font-bold"></i> Evaluación Formativa</h4>
+          <p class="text-xs text-slate-600">Monitoreo circulante en aula durante el trabajo individual e interacciones colaborativas en equipo.</p>
+        </div>
+        <div class="bg-amber-50/60 p-4 rounded-xl border border-amber-200">
+          <h4 class="font-bold text-amber-800 text-sm mb-1"><i class="fa-solid fa-[#1269A8]"></i> Evaluación Sumativa</h4>
+          <p class="text-xs text-slate-600">Rúbrica de evaluación para la plenaria final y presentación del esquema numérico resuelto.</p>
+        </div>
+      </div>
+
+      <!-- Recursos -->
+      <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-600">
+        <span class="font-bold text-slate-700 uppercase tracking-wide"><i class="fa-solid fa-box-open text-[#1269A8]"></i> Recursos Didácticos:</span>
+        <span class="bg-white px-2.5 py-1 rounded shadow-xs border">Cuaderno de apuntes</span>
+        <span class="bg-white px-2.5 py-1 rounded shadow-xs border">Calculadora científica</span>
+        <span class="bg-white px-2.5 py-1 rounded shadow-xs border">Guía práctica de clase</span>
+        <span class="bg-white px-2.5 py-1 rounded shadow-xs border">Simulador Virtual PHET / Canvas</span>
+        <span class="bg-white px-2.5 py-1 rounded shadow-xs border">Pizarra interactiva</span>
+      </div>
+
+    </div>
+
+    <!-- PESTAÑA 2: SECUENCIA DIDÁCTICA INTERACTIVA -->
+    <div id="tab-secuencia" class="main-tab-content bg-white p-6 rounded-b-xl border-x border-b border-slate-200 shadow-sm hidden space-y-6">
+      
+      <!-- SUB-PESTAÑAS DE MOMENTOS -->
+      <div class="flex flex-wrap gap-2 border-b border-slate-200 pb-4">
+        <button onclick="switchMoment('m1')" id="moment-btn-m1" class="moment-btn active px-4 py-2 rounded-lg font-bold text-xs uppercase tracking-wider transition-all">
+          I) Motivación (5 min)
+        </button>
+        <button onclick="switchMoment('m2')" id="moment-btn-m2" class="moment-btn bg-slate-100 text-slate-600 hover:bg-slate-200 px-4 py-2 rounded-lg font-bold text-xs uppercase tracking-wider transition-all">
+          II) Trabajo Individual (20 min)
+        </button>
+        <button onclick="switchMoment('m3')" id="moment-btn-m3" class="moment-btn bg-slate-100 text-slate-600 hover:bg-slate-200 px-4 py-2 rounded-lg font-bold text-xs uppercase tracking-wider transition-all">
+          III) Trabajo Cooperativo (30 min)
+        </button>
+        <button onclick="switchMoment('m4')" id="moment-btn-m4" class="moment-btn bg-slate-100 text-slate-600 hover:bg-slate-200 px-4 py-2 rounded-lg font-bold text-xs uppercase tracking-wider transition-all">
+          IV) Plenaria / Cierre (15 min)
+        </button>
+      </div>
+
+      <!-- MOMENTO I -->
+      <div id="moment-m1" class="moment-content space-y-4">
+        <div class="flex justify-between items-center bg-[#1269A8]/10 p-3 rounded-lg border-l-4 border-[#1269A8]">
+          <h3 class="font-bold text-[#1269A8]">Momento I: Introducción Motivante y Activación de Saberes</h3>
+          <span class="bg-[#1269A8] text-white text-xs font-bold px-3 py-1 rounded-full">Tiempo: 5 Minutos</span>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-white p-4 rounded-xl border border-slate-200 space-y-3">
+            <h4 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+              <i class="fa-solid fa-lightbulb text-[#F7D615]"></i> Dinámica: "¿El Tiro Perfecto de Basquetbol?"
+            </h4>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              El docente presenta un video corto de 30 segundos o realiza una simulación en la pizarra mostrando un tiro libre de baloncesto o un disparo de fútbol por encima de una barrera.
+            </p>
+            <div class="bg-slate-50 p-3 rounded-lg text-xs space-y-1 text-slate-700">
+              <p><strong>Preguntas generadoras para el grupo:</strong></p>
+              <ul class="list-disc list-inside space-y-1 text-slate-600">
+                <li>¿Por qué el balón sube y baja describiendo una curva perfecta y no avanza en línea recta?</li>
+                <li>¿Qué le ocurre a la velocidad horizontal ($v_x$) durante todo el vuelo si ignoramos el aire?</li>
+                <li>¿En qué punto de la trayectoria la velocidad vertical ($v_y$) se vuelve exactamente cero ($0\text{ m/s}$)?</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="bg-[#F2F5E9] p-4 rounded-xl border border-[#A6B046]/40 space-y-3">
+            <h4 class="font-bold text-[#54887D] text-sm flex items-center gap-2">
+              <i class="fa-solid fa-key"></i> Conceptos Clave en Pizarra
+            </h4>
+            <div class="space-y-2 text-xs">
+              <div class="bg-white p-2.5 rounded border border-slate-200">
+                <strong>Componente Horizontal (Eje X):</strong> Movimiento Rectilíneo Uniforme ($MRU$). Velocidad constante $v_x = v_0 \cdot \cos(\theta)$.
+              </div>
+              <div class="bg-white p-2.5 rounded border border-slate-200">
+                <strong>Componente Vertical (Eje Y):</strong> Movimiento con Aceleración Constante ($MRUV$ bajo gravedad $g = 9.8\text{ m/s}^2$). $v_{oy} = v_0 \cdot \sin(\theta)$.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MOMENTO II -->
+      <div id="moment-m2" class="moment-content hidden space-y-4">
+        <div class="flex justify-between items-center bg-[#54887D]/10 p-3 rounded-lg border-l-4 border-[#54887D]">
+          <h3 class="font-bold text-[#54887D]">Momento II: Trabajo Individual e Indagación Dirigida</h3>
+          <span class="bg-[#54887D] text-white text-xs font-bold px-3 py-1 rounded-full">Tiempo: 20 Minutos</span>
+        </div>
+
+        <p class="text-xs text-slate-600">
+          Los estudiantes deben resolver los siguientes ejercicios individualmente en sus cuadernos. Una vez calculados, pueden desplegar la solución para contrastar su procedimiento.
+        </p>
+
+        <!-- EJERCICIO 1 -->
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3">
+          <div class="flex justify-between items-start">
+            <h4 class="font-bold text-slate-800 text-sm">Problema 1: El Lanzamiento de Cañón</h4>
+            <span class="text-xs bg-blue-100 text-[#1269A8] font-semibold px-2 py-0.5 rounded">Práctica Guiada</span>
+          </div>
+          <p class="text-xs text-slate-700">
+            Un proyectil es disparado con una velocidad inicial de $v_0 = 50\text{ m/s}$ con un ángulo de elevación de $\theta = 30^\circ$ respecto a la horizontal. Considera la gravedad $g = 9.8\text{ m/s}^2$. 
+            <br><strong>Calcula:</strong> a) Las componentes iniciales $v_{ox}$ y $v_{oy}$. b) La altura máxima ($y_{max}$).
+          </p>
+
+          <button onclick="toggleSolution('sol-1')" class="text-xs bg-[#1269A8] hover:bg-blue-800 text-white font-bold px-3 py-1.5 rounded transition flex items-center gap-2">
+            <i class="fa-solid fa-eye"></i> Ver / Ocultar Solución Detallada
+          </button>
+
+          <div id="sol-1" class="hidden bg-slate-50 p-4 rounded-lg border border-slate-300 text-xs space-y-2">
+            <p class="font-bold text-[#1269A8]">Solución Paso a Paso:</p>
+            <p><strong>a) Componentes de la velocidad inicial:</strong></p>
+            <p>$$v_{ox} = v_0 \cdot \cos(30^\circ) = 50 \cdot 0.866 = 43.30\text{ m/s}$$</p>
+            <p>$$v_{oy} = v_0 \cdot \sin(30^\circ) = 50 \cdot 0.500 = 25.00\text{ m/s}$$</p>
+            <p><strong>b) Altura máxima ($y_{max}$):</strong> En el punto más alto $v_y = 0$. Usamos la fórmula $y_{max} = \frac{v_{oy}^2}{2g}$:</p>
+            <p>$$y_{max} = \frac{(25.00)^2}{2 \cdot 9.8} = \frac{625}{19.6} \approx 31.89\text{ m}$$</p>
+          </div>
+        </div>
+
+        <!-- EJERCICIO 2 -->
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3">
+          <div class="flex justify-between items-start">
+            <h4 class="font-bold text-slate-800 text-sm">Problema 2: El Alcance Horizontal y Tiempo en el Aire</h4>
+            <span class="text-xs bg-emerald-100 text-[#54887D] font-semibold px-2 py-0.5 rounded">Independiente</span>
+          </div>
+          <p class="text-xs text-slate-700">
+            Con los mismos datos del problema 1 ($v_0 = 50\text{ m/s}$, $\theta = 30^\circ$, $g = 9.8\text{ m/s}^2$), determina:
+            <br><strong>Calcula:</strong> a) El tiempo total de vuelo ($t_v$). b) El alcance horizontal total ($x_{max}$).
+          </p>
+
+          <button onclick="toggleSolution('sol-2')" class="text-xs bg-[#54887D] hover:bg-emerald-800 text-white font-bold px-3 py-1.5 rounded transition flex items-center gap-2">
+            <i class="fa-solid fa-eye"></i> Ver / Ocultar Solución Detallada
+          </button>
+
+          <div id="sol-2" class="hidden bg-slate-50 p-4 rounded-lg border border-slate-300 text-xs space-y-2">
+            <p class="font-bold text-[#54887D]">Solución Paso a Paso:</p>
+            <p><strong>a) Tiempo total de vuelo ($t_v$):</strong> El tiempo para alcanzar la cúspide es $t_{subida} = \frac{v_{oy}}{g} = \frac{25}{9.8} = 2.55\text{ s}$.</p>
+            <p>$$t_v = 2 \cdot t_{subida} = 2 \cdot 2.551 = 5.10\text{ s}$$</p>
+            <p><strong>b) Alcance horizontal máximo ($x_{max}$):</strong> En el eje horizontal el movimiento es uniforme:</p>
+            <p>$$x_{max} = v_{ox} \cdot t_v = 43.30 \cdot 5.10 \approx 220.83\text{ m}$$</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- MOMENTO III -->
+      <div id="moment-m3" class="moment-content hidden space-y-4">
+        <div class="flex justify-between items-center bg-[#A6B046]/20 p-3 rounded-lg border-l-4 border-[#A6B046]">
+          <h3 class="font-bold text-[#1269A8]">Momento III: Trabajo Cooperativo / Desafío en Equipos</h3>
+          <span class="bg-[#A6B046] text-white text-xs font-bold px-3 py-1 rounded-full">Tiempo: 30 Minutos</span>
+        </div>
+
+        <div class="bg-amber-50 p-4 rounded-xl border border-amber-200 text-xs text-amber-900">
+          <p class="font-bold flex items-center gap-2">
+            <i class="fa-solid fa-users"></i> Organización en Equipos de 3 Integrantes (Roles Asignados):
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mt-2">
+            <div class="bg-white p-2 rounded border border-amber-200"><strong>1. Coordinador/Lanzador:</strong> Asegura el flujo de trabajo y la gestión del tiempo.</div>
+            <div class="bg-white p-2 rounded border border-amber-200"><strong>2. Analista/Calculador:</strong> Revisa la aplicación de ecuaciones numéricas e hipótesis.</div>
+            <div class="bg-white p-2 rounded border border-amber-200"><strong>3. Expositor/Sintetizador:</strong> Diseña el poster/esquema para la plenaria final.</div>
+          </div>
+        </div>
+
+        <!-- RETO COOPERATIVO -->
+        <div class="bg-white p-5 rounded-xl border border-slate-200 space-y-3">
+          <h4 class="font-bold text-[#1269A8] text-sm flex items-center gap-2">
+            <i class="fa-solid fa-[#1269A8]"></i> Desafío Institucional: "El Rescate en la Montaña"
+          </h4>
+          <p class="text-xs text-slate-700 leading-relaxed">
+            Un paquete de auxilios médicos debe ser lanzado mediante un dispositivo neumático desde un risco con un ángulo de elevación de $\theta = 45^\circ$ para llegar a un campamento ubicado en la misma cota horizontal a una distancia de $R = 180\text{ metros}$.
+          </p>
+          <div class="bg-slate-50 p-3 rounded-lg border text-xs space-y-2">
+            <p class="font-bold text-slate-800">Tareas del Equipo:</p>
+            <ol class="list-decimal list-inside space-y-1 text-slate-600">
+              <li>Determinar la velocidad inicial ($v_0$) requerida para que el paquete alcance exactamente los $180\text{ m}$.</li>
+              <li>Calcular cuál será la altura máxima alcanzada por el paquete en su trayectoria.</li>
+              <li>Crear en una hoja carta un gráfico cualitativo trazando los vectores de velocidad $(v_x, v_y)$ en 3 puntos clave: origen, cima y aterrizaje.</li>
+            </ol>
+          </div>
+
+          <button onclick="toggleSolution('sol-coop')" class="text-xs bg-slate-700 hover:bg-slate-900 text-white font-bold px-3 py-1.5 rounded transition flex items-center gap-2">
+            <i class="fa-solid fa-key"></i> Clave de Verificación para el Docente (Pista de Apoyo)
+          </button>
+
+          <div id="sol-coop" class="hidden bg-slate-100 p-4 rounded-lg text-xs space-y-2 border border-slate-300">
+            <p class="font-bold text-slate-800">Cálculo Guía:</p>
+            <p>Usando la fórmula de alcance directo: $R = \frac{v_0^2 \cdot \sin(2\theta)}{g}$. Como $\theta = 45^\circ$, entonces $\sin(90^\circ) = 1$.</p>
+            <p>$$180 = \frac{v_0^2 \cdot 1}{9.8} \implies v_0^2 = 180 \cdot 9.8 = 1764 \implies v_0 = \sqrt{1764} = 42\text{ m/s}$$</p>
+            <p>Altura máxima: $y_{max} = \frac{(42 \cdot \sin 45^\circ)^2}{2 \cdot 9.8} = \frac{(29.7)^{2}}{19.6} \approx 45\text{ m}$.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- MOMENTO IV -->
+      <div id="moment-m4" class="moment-content hidden space-y-4">
+        <div class="flex justify-between items-center bg-[#88B5C7]/20 p-3 rounded-lg border-l-4 border-[#1269A8]">
+          <h3 class="font-bold text-[#1269A8]">Momento IV: Plenaria, Evaluación y Cierre</h3>
+          <span class="bg-[#1269A8] text-white text-xs font-bold px-3 py-1 rounded-full">Tiempo: 15 Minutos</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-white p-4 rounded-xl border border-slate-200 space-y-3">
+            <h4 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+              <i class="fa-solid fa-comments text-[#1269A8]"></i> Dinámica de Plenaria (10 min)
+            </h4>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Se seleccionan aleatoriamente 2 equipos para exponer en la pizarra o lámina su solución al "Desafío del Rescate". El resto de la clase actúa como comité evaluador formulando preguntas.
+            </p>
+            <div class="bg-blue-50 p-3 rounded text-xs text-[#1269A8] space-y-1">
+              <p><strong>Preguntas de metacognición para el grupo:</strong></p>
+              <ul class="list-disc list-inside space-y-1 text-slate-700">
+                <li>¿Qué pasaría con el alcance si lanzamos con un ángulo de $60^\circ$ en vez de $45^\circ$ manteniendo la misma velocidad?</li>
+                <li>¿Por qué la velocidad horizontal $v_x$ se mantiene constante en todo el trayecto?</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="bg-[#F2F5E9] p-4 rounded-xl border border-[#A6B046]/40 space-y-3">
+            <h4 class="font-bold text-[#54887D] text-sm flex items-center gap-2">
+              <i class="fa-solid fa-gamepad"></i> Cierre Digital Lúdico (5 min)
+            </h4>
+            <p class="text-xs text-slate-700 leading-relaxed">
+              Uso del simulador interactivo integrado en la siguiente pestaña para validar visualmente la parábola del problema cooperativo o resolver la trivial interactiva rápida.
+            </p>
+            <button onclick="switchMainTab('simulador')" class="w-full bg-[#54887D] hover:bg-emerald-800 text-white font-bold py-2 rounded text-xs transition flex items-center justify-center gap-2">
+              <i class="fa-solid fa-play"></i> Abrir Simulador de Tiro Parabólico
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PESTAÑA 3: SIMULADOR INTERACTIVO -->
+    <div id="tab-simulador" class="main-tab-content bg-white p-6 rounded-b-xl border-x border-b border-slate-200 shadow-sm hidden space-y-6">
+      
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 border-b border-slate-200 pb-3">
+        <div>
+          <h3 class="text-lg font-bold text-[#1269A8] flex items-center gap-2">
+            <i class="fa-solid fa-flask"></i> Laboratorio Digital: Simulador de Proyectiles Montano
+          </h3>
+          <p class="text-xs text-slate-500">Modifica la velocidad y el ángulo para observar la trayectoria parabólica en tiempo real.</p>
+        </div>
+        <span class="bg-[#F7D615] text-[#1269A8] text-xs font-bold px-3 py-1 rounded-full border border-amber-300">
+          $g = 9.8\text{ m/s}^2$
+        </span>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Panel de Controles -->
+        <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-5">
+          <h4 class="font-bold text-slate-800 text-sm border-b pb-2">Parámetros del Lanzamiento</h4>
+
+          <!-- Ángulo -->
+          <div>
+            <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+              <label for="angle">Ángulo de Lanzamiento ($\theta$):</label>
+              <span id="angle-val" class="text-[#1269A8]">45°</span>
+            </div>
+            <input type="range" id="angle" min="15" max="85" value="45" step="1" oninput="updateSimControls()" class="w-full accent-[#1269A8] cursor-pointer">
+          </div>
+
+          <!-- Velocidad Inicial -->
+          <div>
+            <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+              <label for="velocity">Velocidad Inicial ($v_0$):</label>
+              <span id="velocity-val" class="text-[#1269A8]">40 m/s</span>
+            </div>
+            <input type="range" id="velocity" min="10" max="80" value="40" step="1" oninput="updateSimControls()" class="w-full accent-[#1269A8] cursor-pointer">
+          </div>
+
+          <!-- Botón de Disparo -->
+          <div class="pt-2">
+            <button onclick="launchProjectile()" class="w-full bg-[#1269A8] hover:bg-blue-800 text-white font-bold py-2.5 rounded-lg shadow-md text-sm transition flex items-center justify-center gap-2">
+              <i class="fa-solid fa-rocket"></i> Lanzar Proyectil
+            </button>
+          </div>
+
+          <!-- Resultados Calculados -->
+          <div class="bg-white p-4 rounded-lg border border-slate-200 space-y-2 text-xs">
+            <p class="font-bold text-slate-800 border-b pb-1">Valores Calculados:</p>
+            <div class="flex justify-between">
+              <span class="text-slate-600">Componente $v_{ox}$:</span>
+              <span id="res-vox" class="font-bold text-slate-800">28.28 m/s</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-600">Componente $v_{oy}$:</span>
+              <span id="res-voy" class="font-bold text-slate-800">28.28 m/s</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-600">Altura Máx ($y_{max}$):</span>
+              <span id="res-ymax" class="font-bold text-[#54887D]">40.82 m</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-600">Tiempo Vuelo ($t_v$):</span>
+              <span id="res-tv" class="font-bold text-slate-800">5.77 s</span>
+            </div>
+            <div class="flex justify-between pt-1 border-t">
+              <span class="text-slate-700 font-bold">Alcance Max ($x_{max}$):</span>
+              <span id="res-xmax" class="font-bold text-[#1269A8]">163.27 m</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Canvas de Simulación -->
+        <div class="lg:col-span-2 bg-slate-900 rounded-xl p-4 flex flex-col items-center justify-center shadow-inner relative overflow-hidden min-h-[350px]">
+          <canvas id="simCanvas" width="600" height="320" class="w-full h-full bg-slate-950 rounded-lg border border-slate-800"></canvas>
+          <div class="absolute bottom-6 left-6 text-[10px] text-slate-400 bg-slate-900/80 px-2 py-1 rounded border border-slate-800">
+            Escala: Adaptativa en tiempo real
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PESTAÑA 4: RÚBRICA DE EVALUACIÓN PARA LA PLENARIA -->
+    <div id="tab-evaluacion" class="main-tab-content bg-white p-6 rounded-b-xl border-x border-b border-slate-200 shadow-sm hidden space-y-6">
+      
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 border-b border-slate-200 pb-3">
+        <div>
+          <h3 class="text-lg font-bold text-[#1269A8] flex items-center gap-2">
+            <i class="fa-solid fa-clipboard-check"></i> Instrumento de Evaluación: Lista de Cotejo / Rúbrica de Plenaria
+          </h3>
+          <p class="text-xs text-slate-500">Evaluación del desempeño de los equipos durante la presentación final (Total: 100 Puntos).</p>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs text-slate-700 border-collapse">
+          <thead>
+            <tr class="bg-[#1269A8] text-white">
+              <th class="p-3 rounded-tl-lg">Criterio de Evaluación</th>
+              <th class="p-3">Excelente (25 pts)</th>
+              <th class="p-3">Satisfactorio (20 pts)</th>
+              <th class="p-3">En Proceso (15 pts)</th>
+              <th class="p-3 rounded-tr-lg">Necesita Mejorar (10 pts)</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200 bg-slate-50/50">
+            <tr>
+              <td class="p-3 font-bold text-slate-800 bg-white">1. Dominio Teórico y Conceptual</td>
+              <td class="p-3">Explica con claridad la independencia de movimientos en X e Y sin errores conceptuales.</td>
+              <td class="p-3">Comprende la diferencia entre X e Y con imprecisiones menores en términos.</td>
+              <td class="p-3">Confunde la aceleración de la gravedad con la velocidad horizontal.</td>
+              <td class="p-3">No muestra dominio de los principios físicos del tiro parabólico.</td>
+            </tr>
+            <tr>
+              <td class="p-3 font-bold text-slate-800 bg-white">2. Procedimiento y Cálculo Numérico</td>
+              <td class="p-3">Despejes correctos, uso adecuado de trigonometría y dimensionales correctas.</td>
+              <td class="p-3">Procedimiento correcto pero con error numérico menor de redondeo.</td>
+              <td class="p-3">Aplica ecuaciones incorrectas pero intenta estructurar el problema.</td>
+              <td class="p-3">Los cálculos presentados no corresponden al problema planteado.</td>
+            </tr>
+            <tr>
+              <td class="p-3 font-bold text-slate-800 bg-white">3. Trabajo Colaborativo y Roles</td>
+              <td class="p-3">Se evidencia participación equitativa de todos los miembros del equipo.</td>
+              <td class="p-3">Participan todos pero 1 integrante monopoliza la palabra.</td>
+              <td class="p-3">Solo un integrante expone y responde las preguntas del grupo.</td>
+              <td class="p-3">Desorganización evidente e incumplimiento de roles asignados.</td>
+            </tr>
+            <tr>
+              <td class="p-3 font-bold text-slate-800 bg-white">4. Argumentación y Respuesta a Preguntas</td>
+              <td class="p-3">Responde con fundamento físico y soltura a las dudas del docente y compañeros.</td>
+              <td class="p-3">Responde adecuadamente pero requiere apoyo de las notas escritas.</td>
+              <td class="p-3">Respuesta dudosa o incompleta ante cuestionamientos directos.</td>
+              <td class="p-3">No logra responder ni justificar el procedimiento seguido.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="bg-[#F2F5E9] p-4 rounded-xl border border-[#A6B046]/40 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-slate-700">
+        <div>
+          <span class="font-bold text-[#1269A8]">Nota Formativa Sugerida:</span>
+          <span> Ponderación recomendada en zona: 5 a 10 puntos netos de unidad.</span>
+        </div>
+        <button onclick="window.print()" class="bg-[#54887D] hover:bg-emerald-800 text-white font-bold px-4 py-2 rounded shadow transition flex items-center gap-2">
+          <i class="fa-solid fa-print"></i> Imprimir Plan Didáctico
+        </button>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- PIE DE PÁGINA INSTITUCIONAL -->
+  <footer class="bg-slate-800 text-slate-400 text-xs py-4 border-t-4 border-[#1269A8] mt-auto">
+    <div class="max-w-7xl mx-auto px-4 text-center space-y-1">
+      <p class="font-semibold text-slate-300">Colegio Montano — Modelo Formativo de Excelencia</p>
+      <p>Diseñado para uso docente presencial | Asistente Pedagógico Interactivo CM</p>
+    </div>
+  </footer>
+
+  <!-- SCRIPT DE INTERACTIVIDAD Y SIMULACIÓN -->
+  <script>
+    // Navegación de pestañas principales
+    function switchMainTab(tabId) {
+      document.querySelectorAll('.main-tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(el => {
+        el.classList.remove('active');
+        el.classList.add('text-slate-600');
+      });
+
+      document.getElementById('tab-' + tabId).classList.remove('hidden');
+      const activeBtn = document.getElementById('tab-btn-' + tabId);
+      activeBtn.classList.add('active');
+      activeBtn.classList.remove('text-slate-600');
+
+      if(tabId === 'simulador') {
+        setTimeout(drawSimulation, 100);
+      }
+    }
+
+    // Navegación de sub-momentos didácticos
+    function switchMoment(momentId) {
+      document.querySelectorAll('.moment-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.moment-btn').forEach(el => {
+        el.classList.remove('active');
+        el.classList.add('bg-slate-100', 'text-slate-600');
+      });
+
+      document.getElementById('moment-' + momentId).classList.remove('hidden');
+      const activeBtn = document.getElementById('moment-btn-' + momentId);
+      activeBtn.classList.add('active');
+      activeBtn.classList.remove('bg-slate-100', 'text-slate-600');
+    }
+
+    // Mostrar / Ocultar Soluciones
+    function toggleSolution(solId) {
+      const solEl = document.getElementById(solId);
+      if (solEl.classList.contains('hidden')) {
+        solEl.classList.remove('hidden');
+      } else {
+        solEl.classList.add('hidden');
+      }
+    }
+
+    // LÓGICA DEL SIMULADOR INTERACTIVO (CANVAS)
+    const g = 9.8;
+    let animId = null;
+
+    function updateSimControls() {
+      const angle = parseFloat(document.getElementById('angle').value);
+      const vel = parseFloat(document.getElementById('velocity').value);
+
+      document.getElementById('angle-val').innerText = angle + "°";
+      document.getElementById('velocity-val').innerText = vel + " m/s";
+
+      const rad = angle * (Math.PI / 180);
+      const vox = vel * Math.cos(rad);
+      const voy = vel * Math.sin(rad);
+      const tv = (2 * voy) / g;
+      const ymax = (voy * voy) / (2 * g);
+      const xmax = vox * tv;
+
+      document.getElementById('res-vox').innerText = vox.toFixed(2) + " m/s";
+      document.getElementById('res-voy').innerText = voy.toFixed(2) + " m/s";
+      document.getElementById('res-ymax').innerText = ymax.toFixed(2) + " m";
+      document.getElementById('res-tv').innerText = tv.toFixed(2) + " s";
+      document.getElementById('res-xmax').innerText = xmax.toFixed(2) + " m";
+
+      drawSimulation();
+    }
+
+    function drawSimulation(progress = 1) {
+      const canvas = document.getElementById('simCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const width = canvas.width;
+      const height = canvas.height;
+
+      ctx.clearRect(0, 0, width, height);
+
+      // Dibujar cuadrícula tenue
+      ctx.strokeStyle = '#334155';
+      ctx.lineWidth = 0.5;
+      for (let x = 0; x < width; x += 40) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+        ctx.stroke();
+      }
+      for (let y = 0; y < height; y += 40) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+      }
+
+      const angle = parseFloat(document.getElementById('angle').value);
+      const vel = parseFloat(document.getElementById('velocity').value);
+      const rad = angle * (Math.PI / 180);
+      const vox = vel * Math.cos(rad);
+      const voy = vel * Math.sin(rad);
+      const tv = (2 * voy) / g;
+      const xmax = vox * tv;
+      const ymax = (voy * voy) / (2 * g);
+
+      // Márgenes y escalado
+      const margin = 40;
+      const scaleX = (width - margin * 2) / Math.max(xmax * 1.15, 50);
+      const scaleY = (height - margin * 2) / Math.max(ymax * 1.3, 20);
+      const originX = margin;
+      const originY = height - margin;
+
+      // Dibujar Ejes
+      ctx.strokeStyle = '#94a3b8';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(originX, originY);
+      ctx.lineTo(width - 10, originY); // Eje X
+      ctx.moveTo(originX, originY);
+      ctx.lineTo(originX, 10); // Eje Y
+      ctx.stroke();
+
+      // Etiquetas ejes
+      ctx.fillStyle = '#cbd5e1';
+      ctx.font = '10px sans-serif';
+      ctx.fillText('Alcance X (m)', width - 70, originY + 25);
+      ctx.fillText('Altura Y (m)', originX - 30, 20);
+
+      // Trazar curva parabólica
+      ctx.beginPath();
+      ctx.strokeStyle = '#F7D615';
+      ctx.lineWidth = 3;
+
+      let maxT = tv * progress;
+      let lastX = originX;
+      let lastY = originY;
+
+      for (let t = 0; t <= maxT; t += tv / 100) {
+        let x = vox * t;
+        let y = (voy * t) - (0.5 * g * t * t);
+
+        let canvasX = originX + x * scaleX;
+        let canvasY = originY - y * scaleY;
+
+        if (t === 0) {
+          ctx.moveTo(canvasX, canvasY);
+        } else {
+          ctx.lineTo(canvasX, canvasY);
+        }
+        lastX = canvasX;
+        lastY = canvasY;
+      }
+      ctx.stroke();
+
+      // Dibujar Proyectil
+      ctx.beginPath();
+      ctx.arc(lastX, lastY, 6, 0, Math.PI * 2);
+      ctx.fillStyle = '#1269A8';
+      ctx.fill();
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Punto de altura máxima
+      let peakX = originX + (xmax / 2) * scaleX;
+      let peakY = originY - ymax * scaleY;
+      ctx.beginPath();
+      ctx.arc(peakX, peakY, 3, 0, Math.PI * 2);
+      ctx.fillStyle = '#A6B046';
+      ctx.fill();
+      ctx.fillText(`Hmax: ${ymax.toFixed(1)}m`, peakX - 25, peakY - 8);
+    }
+
+    function launchProjectile() {
+      if (animId) cancelAnimationFrame(animId);
+      let startTime = null;
+      const duration = 1500; // 1.5 segundos de animación
+
+      function animate(timestamp) {
+        if (!startTime) startTime = timestamp;
+        let elapsed = timestamp - startTime;
+        let progress = Math.min(elapsed / duration, 1);
+
+        drawSimulation(progress);
+
+        if (progress < 1) {
+          animId = requestAnimationFrame(animate);
+        }
+      }
+
+      animId = requestAnimationFrame(animate);
+    }
+
+    // Inicialización al cargar la página
+    window.addEventListener('DOMContentLoaded', () => {
+      updateSimControls();
+    });
+  </script>
+</body>
+</html>
